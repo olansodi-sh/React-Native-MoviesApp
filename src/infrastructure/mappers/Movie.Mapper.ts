@@ -1,5 +1,5 @@
-import { Movie } from "../../core/models/Movie.Model";
-import type { Result } from "../interfaces/MovieDB.Responses";
+import { FullMovie, Movie } from "../../core/models/Movie.Model";
+import type { MovieDBMovie, Result } from "../interfaces/MovieDB.Responses";
 
 export class MovieMapper{
 
@@ -13,6 +13,23 @@ export class MovieMapper{
             rating: result.vote_average,
             poster: `https://image.tmdb.org/t/p/w500${result.poster_path}`, 
             backdrop: `https://image.tmdb.org/t/p/w500${result.backdrop_path}`,
+        }
+    }
+
+    static fromMovieToModel ( movie: MovieDBMovie ): FullMovie {
+        return {
+            id: movie.id,
+            title: movie.title,
+            description: movie.overview,
+            releaseDate: new Date (movie.release_date),
+            rating: movie.vote_average,
+            poster: `https://image.tmdb.org/t/p/w500${movie.poster_path}`, 
+            backdrop: `https://image.tmdb.org/t/p/w500${movie.backdrop_path}`,
+            genres: movie.genres.map( genre => genre.name),
+            duration: movie.runtime,
+            budget: movie.budget,
+            original_title: movie.original_title,
+            productionCompanies: movie.production_companies.map( company => company.name),
         }
     }
 }
